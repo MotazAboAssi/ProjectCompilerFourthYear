@@ -1,9 +1,7 @@
 lexer grammar Lexer;
 
-// ==========================================
-// 1. RESERVED KEYWORDS
-// ==========================================
 
+// 1. RESERVED KEYWORDS
 VAR       : 'var';
 LET       : 'let';
 CONST     : 'const';
@@ -42,10 +40,8 @@ AWAIT     : 'await';
 YIELD     : 'yield';
 
 
-// ==========================================
-// 2. NUMBERS
-// ==========================================
 
+// 2. NUMBERS
 BIGINT       : [0-9]+ 'n';
 HEX_NUMBER   : '0' [xX] [0-9a-fA-F]+;
 OCTAL_NUMBER : '0' [oO] [0-7]+;
@@ -54,18 +50,15 @@ FLOAT        : [0-9]+ '.' [0-9]+;
 INTEGER      : [0-9]+;
 
 
-// ==========================================
-// 3. BOOLEANS & SPECIAL LITERALS
-// ==========================================
 
+// 3. BOOLEANS & SPECIAL LITERALS
 BOOLEAN   : 'true' | 'false';
 NULL_LIT  : 'null';
 UNDEF_LIT : 'undefined';
 
 
-// ==========================================
-// 4. IDENTIFIERS (المعرفات وأسماء المتغيرات)
-// ==========================================
+
+// 4. IDENTIFIERS
 ID : IdentifierStart IdentifierPart* ;
 
 fragment IdentifierStart
@@ -78,17 +71,52 @@ fragment IdentifierPart
     ;
 
 
+// 5. OPERATORS
+ASSIGN        : '=';
+ADD           : '+';
+SUB           : '-';
+MUL           : '*';
+DIV           : '/';
+MOD           : '%';
+EXP           : '**';
+INC           : '++';
+DEC           : '--';
 
-// ==========================================
-// 5. OPERATORS (العمليات)
-// ==========================================
+EQ            : '==';
+STRICT_EQ     : '===';
+NOT_EQ        : '!=';
+STRICT_NOT_EQ : '!==';
+LT            : '<';
+GT            : '>';
+LTE           : '<=';
+GTE           : '>=';
+
+AND           : '&&';
+OR            : '||';
+NOT           : '!';
+
+BIT_AND       : '&';
+BIT_OR        : '|';
+BIT_XOR       : '^';
+BIT_NOT       : '~';
+LSHIFT        : '<<';
+RSHIFT        : '>>';
+URSHIFT       : '>>>';
+
+ADD_ASSIGN    : '+=';
+SUB_ASSIGN    : '-=';
+MUL_ASSIGN    : '*=';
+DIV_ASSIGN    : '/=';
+EXP_ASSIGN    : '**=';
+
+ARROW         : '=>';
+NULLISH       : '??';
+OPTIONAL_CHAIN: '?.';
+SPREAD        : '...';
 
 
 
-// ==========================================
 // 6. PUNCTUATION & DELIMITERS
-// ==========================================
-
 SEMI          : ';';
 COMMA         : ',';
 DOT           : '.';
@@ -103,10 +131,8 @@ LBRACK        : '[';
 RBRACK        : ']';
 
 
-// ==========================================
-// 7. COMMENTS & WHITESPACE
-// ==========================================
 
+// 7. COMMENTS & WHITESPACE
 SINGLE_LINE_COMMENT
     : '//' (~[\r\n])* -> skip;
 
