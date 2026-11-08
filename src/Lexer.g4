@@ -1,6 +1,5 @@
 lexer grammar Lexer;
 
-
 // 1. RESERVED KEYWORDS
 VAR       : 'var';
 LET       : 'let';
