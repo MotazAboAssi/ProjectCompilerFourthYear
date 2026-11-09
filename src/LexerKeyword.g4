@@ -1,4 +1,4 @@
-lexer grammar Lexer;
+lexer grammar LexerKeyword;
 
 
 // 1. RESERVED KEYWORDS
@@ -39,36 +39,54 @@ ASYNC     : 'async';
 AWAIT     : 'await';
 YIELD     : 'yield';
 
+DEBUGGER : 'debugger' ;
+EXPORT : 'export' ;
+IMPORT : 'import' ;
+IN : 'in' ;
+WITH : 'with' ;
+STATIC : 'static' ;
 
+// Future reserved words
+ENUM : 'enum' ;
+IMPLEMENT : 'implements' ;
+INTERFACE : 'interface' ;
+PACKAGE : 'package';
+PRIVATE : 'private' ;
+PROTECT : 'protected' ;
+PUBLIC : 'public';
 
-// 2. NUMBERS
-BIGINT       : [0-9]+ 'n';
-HEX_NUMBER   : '0' [xX] [0-9a-fA-F]+;
-OCTAL_NUMBER : '0' [oO] [0-7]+;
-BINARY_NUMBER : '0' [bB] [01]+;
-FLOAT        : [0-9]+ '.' [0-9]+;
-INTEGER      : [0-9]+;
+// Future reserved words in older standards
+ABSTRACT : 'abstract' ;
+BOOLEAN : 'boolean';
+BYTE : 'byte';
+CHAR : 'char';
+DOUBLE : 'double';
+FINAL  : 'final';
+FLOAT : 'float';
+GOTO : 'goto';
+INT : 'int';
+LONG : 'long';
+NATIVE : 'native';
+SHORT : 'short';
+SYNCHRNIZED : 'synchronized';
+THROWS : 'throws';
+TRANSIENT : 'transient';
+VOLATILE : 'volatile' ;
 
+// Identifiers with special meanings
+GET : 'get' ;
+OF : 'of' ;
+SET : 'set' ;
+ARGUMENTS : 'arguments' ;
+FROM : 'from';
+AS : 'as' ;
 
 
 // 3. BOOLEANS & SPECIAL LITERALS
-BOOLEAN   : 'true' | 'false';
+BOOLEAN_LIT : 'true' | 'false';
 NULL_LIT  : 'null';
 UNDEF_LIT : 'undefined';
 
-
-
-// 4. IDENTIFIERS
-ID : IdentifierStart IdentifierPart* ;
-
-fragment IdentifierStart
-    : [a-zA-Z_$]
-    | '\\' [uU] [0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]
-    ;
-
-fragment IdentifierPart
-    : [a-zA-Z0-9_$]
-    ;
 
 
 // 5. OPERATORS
@@ -129,15 +147,3 @@ LBRACE        : '{';
 RBRACE        : '}';
 LBRACK        : '[';
 RBRACK        : ']';
-
-
-
-// 7. COMMENTS & WHITESPACE
-SINGLE_LINE_COMMENT
-    : '//' (~[\r\n])* -> skip;
-
-MULTI_LINE_COMMENT
-    : '/*' .*? '*/' -> skip;
-
-WS
-    : [ \t\r\n]+ -> skip;
