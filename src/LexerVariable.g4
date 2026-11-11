@@ -18,10 +18,10 @@ BINARY_NUMBER
     : '0' [bB] [01] [01_]* ;
 
 FLOAT
-    : [0-9] [0-9_]* '.' [0-9] [0-9_]* (('e' | 'E') ('+' | '-')? [0-9] [0-9_]*)?
-    | '.' [0-9] [0-9_]* (('e' | 'E') ('+' | '-')? [0-9] [0-9_]*)?
-    | [0-9] [0-9_]* (('e' | 'E') ('+' | '-')? [0-9] [0-9_]*) ;
-
+    : INTEGER '.' INTEGER EXPOTENTIAL?
+    | '.' INTEGER EXPOTENTIAL?
+    | INTEGER EXPOTENTIAL ;
+EXPOTENTIAL : [eE] [+-]? INTEGER ;
 INTEGER
     : [0-9] [0-9_]* ;
 

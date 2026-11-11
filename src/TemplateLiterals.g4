@@ -1,6 +1,6 @@
 lexer grammar TemplateLiterals;
 
-import LexerKeyword, StringLexer, LexerVariable;
+import LexerVariable;
 
 tokens {
     INTERPOLATION_END,
