@@ -1,1 +1,14 @@
-"sdfsf\"dlkfj;skjfsfds"
+var n1 = 42;            // INTEGER
+var n2 = 1_000_000;     // separator allowed between digits
+var n3 = 3.14;          // FLOAT
+var n4 = .5;            // FLOAT starting with a dot
+var n5 = 5.;            // FLOAT ending with a dot
+var n6 = 1e3;           // exponent
+var n7 = 2.5E-3;        // signed exponent
+var n8 = 0xFF;          // HEX_NUMBER
+var n9 = 0o17;          // OCTAL_NUMBER
+var n10 = 0b1010;       // BINARY_NUMBER
+var n11 = 123n;         // BIGINT
+var n12 = 0xFFn;        // BIGINT (hex)
+var n13 = 1_0.0_1;      // separators in both parts
+var n14 = 0;            // zero

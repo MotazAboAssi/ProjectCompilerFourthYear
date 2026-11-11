@@ -132,6 +132,16 @@ NULLISH       : '??';
 OPTIONAL_CHAIN: '?.';
 SPREAD        : '...';
 
+NULLISH_ASSIGN   : '??=';
+AND_ASSIGN       : '&&=';
+OR_ASSIGN        : '||=';
+BIT_AND_ASSIGN   : '&=';
+BIT_OR_ASSIGN    : '|=';
+BIT_XOR_ASSIGN   : '^=';
+LSHIFT_ASSIGN    : '<<=';
+RSHIFT_ASSIGN    : '>>=';
+URSHIFT_ASSIGN   : '>>>=';
+
 
 
 // 6. PUNCTUATION & DELIMITERS
@@ -147,3 +157,19 @@ LBRACE        : '{';
 RBRACE        : '}';
 LBRACK        : '[';
 RBRACK        : ']';
+
+
+// 4. IDENTIFIERS
+ID : IdentifierStart IdentifierPart* ;
+
+fragment IdentifierStart
+    : [a-zA-Z_$]
+    | '\\' [uU] [0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]
+    | '\\' [uU] '{' [0-9a-fA-F]+ '}'
+    ;
+
+fragment IdentifierPart
+    : [a-zA-Z0-9_$]
+     | '\\' [uU] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
+     | '\\' [uU] '{' [0-9a-fA-F]+ '}'
+    ;
