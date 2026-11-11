@@ -1,14 +1,29 @@
-var n1 = 42;            // INTEGER
-var n2 = 1_000_000;     // separator allowed between digits
-var n3 = 3.14;          // FLOAT
-var n4 = .5;            // FLOAT starting with a dot
-var n5 = 5.;            // FLOAT ending with a dot
-var n6 = 1e3;           // exponent
-var n7 = 2.5E-3;        // signed exponent
-var n8 = 0xFF;          // HEX_NUMBER
-var n9 = 0o17;          // OCTAL_NUMBER
-var n10 = 0b1010;       // BINARY_NUMBER
-var n11 = 123n;         // BIGINT
-var n12 = 0xFFn;        // BIGINT (hex)
-var n13 = 1_0.0_1;      // separators in both parts
-var n14 = 0;            // zero
+`${((strings, ...values) => {
+    const state = {};
+    const script = strings.reduce(
+        (acc, str, i) =>
+            acc + str +
+            (values[i] !== undefined
+                ? JSON.stringify(values[i])
+                : ""),
+        ""
+    );
+
+    script.trim().split("\n").forEach(line => {
+        const parts = line.trim().split(" ");
+        const cmd = parts[0];
+        const key = parts[1];
+        const val = parts[2];
+
+        if (cmd === "SET") {
+            state[key] = Number(val);
+        }
+
+        if (cmd === "ADD") {
+            state[key] = (state[key] || 0) + Number(val);
+        }
+    });
+
+    return state.gold;
+})`SET gold ${100}
+ADD gold ${50}`}`
