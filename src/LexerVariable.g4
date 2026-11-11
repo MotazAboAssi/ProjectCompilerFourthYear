@@ -1,8 +1,8 @@
 lexer grammar LexerVariable ;
-
+import LexerKeyword ;
 // 2. NUMBERS
 //BIGINT       : [0-9]+ 'n';
- fragment BIGINT_DECIML : BIT_INTEGER_WITHOUT_ZERO INTEGER ;
+fragment BIGINT_DECIML : BIT_INTEGER_WITHOUT_ZERO INTEGER ;
 BIGINT : (OCTAL_NUMBER |BINARY_NUMBER  |HEX_NUMBER ) 'n' ;
 BIT_INTEGER_WITHOUT_ZERO : [1-9] ;
 INTEGER      : [0-9]+;
@@ -13,7 +13,7 @@ FLOAT        : [0-9]+ '.' [0-9]+;
 NUMBER : (FLOAT | INTEGER) [eE] [-+]?[0-9]+ ;
 
 // 4. IDENTIFIERS
-ID : IdentifierStart IdentifierPart* ;
+fragment ID : IdentifierStart IdentifierPart* ;
 
 fragment IdentifierStart
     : [a-zA-Z_$]
@@ -33,7 +33,6 @@ MULTI_LINE_COMMENT
 
 HASHBANG_COMMENT : '#!'('/'[a-zA-Z ]+)+ -> skip ;
 
-WS
-    : [ \t\r\n]+ -> skip;
+WS : [ \t\r\n]+ -> skip;
 
 
