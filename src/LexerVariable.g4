@@ -1,38 +1,52 @@
 lexer grammar LexerVariable ;
-import LexerKeyword ;
+import LexerKeyword, StringLexer ;
+
+
 // 2. NUMBERS
-//BIGINT       : [0-9]+ 'n';
-fragment BIGINT_DECIML : BIT_INTEGER_WITHOUT_ZERO INTEGER ;
-BIGINT : (OCTAL_NUMBER |BINARY_NUMBER  |HEX_NUMBER ) 'n' ;
-BIT_INTEGER_WITHOUT_ZERO : [1-9] ;
-INTEGER      : [0-9]+;
-HEX_NUMBER   : '0' [xX] [0-9a-fA-F]+;
-OCTAL_NUMBER : '0' [oO]? [0-7]+;
-BINARY_NUMBER : '0' [bB] [01]+;
-FLOAT        : [0-9]+ '.' [0-9]+;
-NUMBER : (FLOAT | INTEGER) [eE] [-+]?[0-9]+ ;
+BIGINT
+    : (HEX_NUMBER | OCTAL_NUMBER | BINARY_NUMBER | DECIMAL_WITH_SEP) 'n';
 
-// 4. IDENTIFIERS
-fragment ID : IdentifierStart IdentifierPart* ;
+HEX_NUMBER
+    : '0' [xX] [0-9a-fA-F] [0-9a-fA-F_]*;
 
-fragment IdentifierStart
-    : [a-zA-Z_$]
-    | '\\' [uU] [0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]
+
+OCTAL_NUMBER
+    : '0' [oO] [0-7] [0-7_]*
+    | '0' [0-7]+   ;
+
+BINARY_NUMBER
+    : '0' [bB] [01] [01_]* ;
+
+FLOAT
+    : [0-9] [0-9_]* '.' [0-9] [0-9_]* (('e' | 'E') ('+' | '-')? [0-9] [0-9_]*)?
+    | '.' [0-9] [0-9_]* (('e' | 'E') ('+' | '-')? [0-9] [0-9_]*)?
+    | [0-9] [0-9_]* (('e' | 'E') ('+' | '-')? [0-9] [0-9_]*) ;
+
+INTEGER
+    : [0-9] [0-9_]* ;
+
+fragment DECIMAL_WITH_SEP
+    : [0-9] [0-9_]*
     ;
 
-fragment IdentifierPart
-    : [a-zA-Z0-9_$]
-    ;
+
 
 // 7. COMMENTS & WHITESPACE
+HASHBANG_COMMENT
+    : '#!' ~[\r\n]* -> skip;
+
 SINGLE_LINE_COMMENT
     : '//' (~[\r\n])* -> skip;
 
 MULTI_LINE_COMMENT
     : '/*' .*? '*/' -> skip;
 
-HASHBANG_COMMENT : '#!'('/'[a-zA-Z ]+)+ -> skip ;
+  WS
+     : [ \t\u000B\f\u00A0\uFEFF] -> skip
+         ;
 
-WS : [ \t\r\n]+ -> skip;
+     LINE_TERMINATOR
+         : [\r\n\u2028\u2029] -> skip
+         ;
 
 
