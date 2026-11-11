@@ -1,20 +1,34 @@
-import gen.TemplateLiterals;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.Token;
+
+import java.io.IOException;
+import java.util.List;
+import gen.*;
 
 public class Main {
-    public static void main(String[] args) {
-        // نص تجريبي يجمع: كلمة محجوزة + متغير + نص عادي + Template Literal
-        String code = "const user = \"Ali\"; `Hello ${user} ${10 + 20}`;";
+    public static void main(String[] args) throws IOException {
 
-        CharStream input = CharStreams.fromString(code);
-        TemplateLiterals lexer = new TemplateLiterals(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        tokens.fill();
+        // 1. الملف الذي نريد تحليله
+        String filePath = "src/input.js";
 
-        for (Token token : tokens.getTokens()) {
-            if (token.getType() == Token.EOF) break;
+        // 2. نستخدم الـ Lexer المدمج MainLexer (بدل LexerVariable وحده)
+        MainLexer lexer = new MainLexer(CharStreams.fromFileName(filePath));
+
+        // 3. جلب جميع التوكنز
+        List<? extends Token> tokens = lexer.getAllTokens();
+
+        System.out.println("--- Tokens Found ---");
+        for (Token token : tokens) {
             String tokenName = lexer.getVocabulary().getSymbolicName(token.getType());
-            System.out.printf("Token: %-18s | Text: %s%n", tokenName, token.getText());
+            System.out.println("Text: [" + token.getText() + "] -> Type: " + tokenName);
+
+            // للنصوص: اطبع القيمة الفعلية بعد حذف علامات "\ + سطر جديد"
+            if ("STRING".equals(tokenName)) {
+                String raw = token.getText();
+                String body = raw.substring(1, raw.length() - 1);
+                String value = body.replaceAll("\\\\(\\r\\n|\\r|\\n|\\u2028|\\u2029)", "");
+                System.out.println("   Value: [" + value + "]");
+            }
         }
     }
 }

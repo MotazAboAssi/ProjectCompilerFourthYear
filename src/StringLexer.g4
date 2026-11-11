@@ -1,19 +1,30 @@
-lexer grammar StringLexer ;
-//import LexerVariable ;
+lexer grammar StringLexer;
 
-tokens {STRING}
+// يُعرّف نوع التوكن النهائي. يجب أن يكون قبل القواعد.
+tokens { STRING }
 
+// ---------- DEFAULT MODE : بداية النص فقط ----------
+// more  = لا تُصدر توكن الآن، احتفظ بالنص المطابق وكمّل
+// pushMode = ادخل وضع قراءة داخل النص
+STRING_START_DQ : '"'  -> more, pushMode(DQ_STR) ;
+STRING_START_SQ : '\'' -> more, pushMode(SQ_STR) ;
 
-STRING_DOUBLEQOAT_START : '"' -> more, pushMode(DOUBLEQOAT) ;
-STRING_SINGLEQOAT_START : '\'' -> more, pushMode(SINGLEQOAT) ;
-WS           : [ \t\r\n]+ -> skip ;
+// ---------- داخل نص "..." ----------
+mode DQ_STR;
 
-mode DOUBLEQOAT;
-STR_ESCAPE1 : '\\'(.|[\n])  -> more ;
-STR_TEXT1   : ~["\n] -> more ;
-STRING_DOUBLEQOAT_END : '"' -> type(STRING), popMode ;
+// \ ثم سطر جديد  => استمرار السطر (هذه هي حالة ملفك)
+DQ_LINE_CONT : '\\' ( '\r\n' | '\r' | '\n' | '\u2028' | '\u2029' ) -> more ;
+// أي escape آخر: \"  \\  \n  \t  \u0041 ...
+DQ_ESCAPE    : '\\' ~[\r\n] -> more ;
+// أي محارف عادية (ليس " ولا \ ولا سطر جديد)
+DQ_TEXT      : ~["\\\r\n]+ -> more ;
+// النهاية: يصبح نوع التوكن STRING ونرجع للوضع الأصلي
+DQ_END       : '"' -> type(STRING), popMode ;
 
-mode SINGLEQOAT;
-STR_ESCAPE2 : '\\' (.|[\n])  -> more ;
-STR_TEXT2   : ~['\n] -> more ;
-STRING_SINGLEQOAT_END : '\'' -> type(STRING), popMode ;
+// ---------- داخل نص '...' ----------
+mode SQ_STR;
+
+SQ_LINE_CONT : '\\' ( '\r\n' | '\r' | '\n' | '\u2028' | '\u2029' ) -> more ;
+SQ_ESCAPE    : '\\' ~[\r\n] -> more ;
+SQ_TEXT      : ~['\\\r\n]+ -> more ;
+SQ_END       : '\'' -> type(STRING), popMode ;
